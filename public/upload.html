@@ -2,65 +2,55 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<title>Final Project: Defi</title>
-	<style>
-		.flex {
-			display: flex;
-		}
+  <meta charset="UTF-8">
+  <title>DS Final Project: </title>
+  <style>
+    .flex {
+      display: flex;
+    }
 
-		.item {
-			flex: 1;
-			padding: 2rem;
-		}
-	</style>
+    .item {
+      flex: 1;
+      padding: 2rem;
+    }
+  </style>
 </head>
 
 <body>
-	<div class="flex">
+  <div class="flex">
     <div class="item">
       <h2>新增標物</h2>
 
-      <h5>上傳商品圖片</h5>
-      <input id="file"" type="file" placeholder="借貸額度 (USDT)">
+      <form id="form1" name="form1" method="post" action="http://127.0.0.1:3000/upload" onclick="return false">
+        <!--
+        <h5>上傳商品圖片</h5>
 
-			<h5>名稱</h5>
-      <input id="borrow" type="number" placeholder="借貸額度 (USDT)">
-      
-      <h5>起標價</h5>
-      <input id="borrow" type="number" placeholder="借貸額度 (USDT)">
-      
-      <h5>結標時間</h5>
-      <input id="borrow" type="number" placeholder="借貸額度 (USDT)">
-      
-      <h5>商品明細</h5>
-      <input id="borrow" type="number" placeholder="借貸額度 (USDT)">
-      
-      <div >
-        <button id="withdrawButton">執行</button>
-      </div>
-		<!--
-			<hr>
-			<h3 id="updateCoin">更新餘額</h3>
-      <button id="update">執行</button>
-      -->
+        <input id="file" type="file" placeholder="借貸額度 (USDT)">
 
-      <!--
-			<h3>銀行合約</h3>
-			<h5 id="contractAddress">合約位址: </h5>
-			<input id="deployedContractAddressInput" type="text" placeholder="請輸入既有合約位址" />
-			<button id="loadDeployedContractButton">載入既有合約位址</button>
-      <button id="deployNewContractButton">部署新合約</button>
-      -->
+        <img id="demo" />
+-->
+        <h5>名稱</h5>
+        <input id="name" name="name" type="text" placeholder="商品名稱">
 
-			<!-- <hr> -->
+        <h5>起標價</h5>
+        <input id="beginPrice" name="beginPrice" type="number" placeholder="起標價（TWD）">
 
+        <h5>結標時間</h5>
+        <input id="time" name="time" type="date">
 
-		</div>
-	</div>
+        <h5>說明</h5>
+        <input id="description" name="description" type="text" placeholder="商品說明">
 
-	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-	<script src="javascripts/index.js"></script>
+        <p>
+          <input id="send" type="submit" value="送出">
+        </p>
+
+      </form>
+    </div>
+  </div>
+
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+  <script src="javascripts/index.js"></script>
 </body>
 
 </html>
