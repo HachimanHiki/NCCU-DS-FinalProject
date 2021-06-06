@@ -24,7 +24,7 @@
 				<% datalist.forEach((data)=>{ %>
 					<div>
 					  <%=data.ID+1%>
-					  <button onclick = "showitem('<%=data.ID%>')" style = "border:None; background-color:#FFFFFF;cursor:pointer"><%= data.GoodName %></button>
+					  <button onclick = "showitem('<%=data.ID%>')" style = "border:None; background-color:#FFFFFF;cursor:pointer"><%= data.name %></button>
 					</div>
 				<%})%>
 			</div>

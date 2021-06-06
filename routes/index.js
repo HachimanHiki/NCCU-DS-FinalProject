@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let data = [];
-
+let datalist = [];
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('upload', { title: 'Express' });
@@ -10,9 +9,11 @@ router.get('/', function(req, res, next) {
 
 router.post('/upload', function(req, res, next) {
   let object = JSON.parse(JSON.stringify(req.body));
+  let ID = datalist.length
+  object['ID'] = ID
   //console.log(object);
-  data[req.body.name] = object;
-  //console.log(data);
+  datalist[ID] = object;
+  // console.log(datalist);
   //console.log(data[req.body.name]);
   res.send('thanks');
 });
@@ -36,11 +37,11 @@ router.get('/display',function(req, res) {
 router.get('/changeitem', async function (req, res, next) {
   var i = req.query.ID
 	res.send({
-    GoodName:datalist[i].GoodName,
-    StartPrice:datalist[i].StartPrice,
-    CurrentPrice:datalist[i].CurrentPrice,
-    Deadline:datalist[i].Deadline,
-    GoodDescription:datalist[i].GoodDescription,
+    GoodName:datalist[i].name,
+    StartPrice:datalist[i].beginPrice,
+    CurrentPrice:datalist[i].beginPrice,
+    Deadline:datalist[i].time,
+    GoodDescription:datalist[i].description,
 	})
 });
 module.exports = router;
