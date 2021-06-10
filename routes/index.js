@@ -4,7 +4,7 @@ var router = express.Router();
 
 // create a kafka client to connect kafka server 
 var kafka = require('kafka-node');
-client = new kafka.KafkaClient({ kafkaHost: '18.224.252.168:9092' }),
+let  client = new kafka.KafkaClient({ kafkaHost: '18.224.252.168:9092' }),
 
     //create  a  producer 
 Producer = kafka.Producer
@@ -60,25 +60,22 @@ router.post('/upload', function(req, res, next) {
 
     }];
 
-    client.createTopics(topicsToCreate, (error, result)=> {
-        // result is an array of any errors if a given topic could not be created
- 
+    client.createTopics(topicsToCreate, (error, result) => {
+        
+         // result is an array of any errors if a given topic could not be created
+    
         //save data into topic 
-
-
-    /* producer.on('ready', function () {
-                console.log('producer on')
-                payloads = [
+        payloads = [
                     { topic: kfdata['ID'], messages: JSON.stringify(kfdata), partition: 0 }
                 ];
                 producer.send(payloads, function (err, data) {
                     console.log(data);
-                    client.close();
+                
                 });
-     });
-        producer.on('error', function (err) { console.log(err); })
-        */
-        console.log('create topic');
+    
+       // producer.on('error', function (err) { console.log(err); })
+        
+        //console.log(kfdata);
 
     //end save data
       
