@@ -14,10 +14,6 @@ Consumer = kafka.Consumer;
 
 let datalist = [];
 let enddata = [];
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('upload', { title: 'Express' });
-});
 
 
 
@@ -99,10 +95,6 @@ router.post('/upload', function(req, res, next) {
 
 
   res.send('thanks');
-});
-
-router.get('/present', function(req, res, next) {
-  res.render('index', { title: 'Express' });
 });
 
 router.get('/display',function(req, res) {
