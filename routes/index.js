@@ -13,6 +13,7 @@ producer = new Producer(client),
 Consumer = kafka.Consumer;
 
 let datalist = [];
+let enddata = [];
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('upload', { title: 'Express' });
@@ -32,13 +33,13 @@ router.post('/upload', function(req, res, next) {
 
 /*    
  *    
- *    ID               : string   			   //°Ó«~¦WºÙ
-    add_item    : boolean  		 	//true ·s¼W¼Ğª« false Äv¼Ğ
-    email           : string  			             //Äv¼ĞªÌ©Î·s¼W¼Ğª«ªº¤Hªºemail 
-    price            : number   			        //¦pªG¬O·s¼W¼Ğª«¥Nªí°_¼Ğ»ù¡AÄv¼ĞªÌªº¥X»ù
-    end_time    : number(unix time)    // ºI¼Ğ®É¶¡
-    timestamp : number(unix time)    	 //¨Æ¥óµo¥Í®É¶¡
-    description : string   			              //»¡©ú 
+ *    ID               : string   			   //å•†å“åç¨±
+    add_item    : boolean  		 	//true æ–°å¢æ¨™ç‰© false ç«¶æ¨™
+    email           : string  			             //ç«¶æ¨™è€…æˆ–æ–°å¢æ¨™ç‰©çš„äººçš„email
+    price            : number   			        //å¦‚æœæ˜¯æ–°å¢æ¨™ç‰©ä»£è¡¨èµ·æ¨™åƒ¹ï¼Œç«¶æ¨™è€…çš„å‡ºåƒ¹
+    end_time    : number(unix time)    // æˆªæ¨™æ™‚é–“
+    timestamp : number(unix time)    	 //äº‹ä»¶ç™¼ç”Ÿæ™‚é–“
+    description : string   			              //èªªæ˜ 
 
 */
 
@@ -108,6 +109,7 @@ router.get('/display',function(req, res) {
   var i = 0
   res.render('display',{
     datalist:datalist,
+    enddata:enddata,
     // GoodName:data[i].GoodName,
     // StartPrice:data[i].StartPrice,
     // CurrentPrice:data[i].CurrentPrice,
@@ -126,4 +128,17 @@ router.get('/changeitem', async function (req, res, next) {
     GoodDescription:datalist[i].description,
 	})
 });
+
+router.get('/endbidding', async function (req, res, next) {
+  // for(var i = 0;i<datalist.length;i++){
+  //   console.log(i);
+  //   var data = datalist.shift();
+  //   enddata.push(data);
+  // }
+  enddata = datalist
+  datalist = []
+  console.log(enddata);
+	res.send('move datalist into enddata');
+});
+
 module.exports = router;
