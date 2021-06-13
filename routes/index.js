@@ -87,6 +87,13 @@ router.post('/upload', function (req, res, next) {
   res.send('<a href="/display">商品列表</a>');
 });
 
+router.post('/updatePrice', function (req, res, next) {
+  datalist[req.body.ID].beginPrice = req.body.price;
+  res.send({
+		itemInfo: datalist[req.body.ID]
+	})
+});
+
 router.get('/display', function (req, res) {
   var i = 0
   res.render('display', {

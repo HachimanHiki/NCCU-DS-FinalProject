@@ -3,6 +3,8 @@ let EndButton = $('#EndButton');
 
 let nowitem = null;
 
+let nowID;
+
 function showitem(ID) {
     //console.log(i)
     $.get('/changeitem', {
@@ -15,6 +17,7 @@ function showitem(ID) {
         $('#CurrentPrice').text('目前標價: ' + result.CurrentPrice)
         $('#Deadline').text('截標時間: ' + result.Deadline)
         $('#GoodDescription').text('商品說明:' + result.GoodDescription)
+        nowID = ID;
     })
 }
 refreshButton.on('click', function () {
@@ -33,3 +36,13 @@ EndButton.on('click', function () {
         })
     }
 })
+
+function biditem() {
+    //console.log(i)
+    $.post('/updatePrice', {
+        ID: nowID,
+        price: parseInt($('#bidPrice').val(), 10)
+    }, function () {
+        showitem(nowID);
+    })
+}
