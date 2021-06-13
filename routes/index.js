@@ -12,6 +12,8 @@ producer = new Producer(client),
     //create a consumer 
 Consumer = kafka.Consumer;
 
+const admin = new kafka.Admin(client);
+
 let datalist = [];
 let enddata = [];
 /* GET home page. */
@@ -106,15 +108,18 @@ router.get('/present', function(req, res, next) {
 });
 
 router.get('/display',function(req, res) {
-  var i = 0
-  res.render('display',{
-    datalist:datalist,
-    enddata:enddata,
-    // GoodName:data[i].GoodName,
-    // StartPrice:data[i].StartPrice,
-    // CurrentPrice:data[i].CurrentPrice,
-    // Deadline:data[i].Deadline,
-    // GoodDescription:data[i].GoodDescription,
+  admin.listTopics((err, res1) => {
+    var obj = res1[1].metadata;
+    var keys = Object.keys(obj)
+    datalist = [];
+    for (i = 0; i < keys.length; i++) {
+      datalist[i]= keys[i];
+    }
+    console.log(datalist)
+    res.render('display', {
+      datalist: datalist,
+      enddata: enddata,
+    });
   });
 })
 
