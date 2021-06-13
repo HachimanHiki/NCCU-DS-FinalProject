@@ -130,14 +130,10 @@ router.get('/changeitem', async function (req, res, next) {
 });
 
 router.get('/endbidding', async function (req, res, next) {
-  // for(var i = 0;i<datalist.length;i++){
-  //   console.log(i);
-  //   var data = datalist.shift();
-  //   enddata.push(data);
-  // }
-  enddata = datalist
-  datalist = []
-  console.log(enddata);
+  // console.log(req.query.name);
+  exec('sudo ~/kafka_2.13-2.8.0/bin/kafka-topics.sh --delete --topic ' +req.query.name+ ' --zookeeper localhost:2181',function(err,stdout,stderr){
+    console.log(stdout);
+  });
 	res.send('move datalist into enddata');
 });
 
