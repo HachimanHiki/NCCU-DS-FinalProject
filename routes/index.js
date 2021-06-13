@@ -84,7 +84,7 @@ router.post('/upload', function (req, res, next) {
   // console.log(datalist);
   //console.log(data[req.body.name]);
 
-  res.send('thanks');
+  res.send('<a href="/display">商品列表</a>');
 });
 
 router.get('/display', function (req, res) {
