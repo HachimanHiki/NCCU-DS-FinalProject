@@ -15,10 +15,10 @@ $(document).ready(function () {
             alert("你尚未填寫姓名");
             eval("document.form1['name'].focus()");
         } else if ($("#beginPrice").val() == "") {
-            alert("你尚未填寫電話");
+            alert("你尚未填寫價格");
             eval("document.form1['beginPrice'].focus()");
         } else if ($("#time").val() == "") {
-            alert("你尚未填寫地址");
+            alert("你尚未填寫時間");
             eval("document.form1['time'].focus()");
         } else {
             document.form1.submit();
