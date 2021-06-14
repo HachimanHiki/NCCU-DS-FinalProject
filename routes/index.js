@@ -43,7 +43,7 @@ router.post('/upload', function (req, res, next) {
 
   var kfdata = {};
   kfdata['ID'] = object['name'];
-  kfdata['email'] = "example@gmail.com";
+  kfdata['email'] = object['email'];
   kfdata['startPrice'] = Number(object['beginPrice']);
   kfdata['currentPrice'] = Number(object['beginPrice']);
   kfdata['endTime'] = object['time'];
@@ -99,10 +99,32 @@ router.post('/upload', function (req, res, next) {
 });
 
 router.post('/updatePrice', function (req, res, next) {
-  datalist[req.body.ID].beginPrice = req.body.price;
-  res.send({
-    itemInfo: datalist[req.body.ID]
-  })
+  let today = new Date();
+  let deadlineDate = new Date(datalist[req.body.ID].time);
+
+  if (today >= deadlineDate){
+    res.send({
+      error: '已經過了競標時間'
+    })
+  }
+  else if (datalist[req.body.ID].beginPrice >= req.body.price) {
+    res.send({
+      error: '您的出價金額比現價金額低，請再輸入一次'
+    })
+  }
+  else if (datalist[req.body.ID].email == req.body.email) {
+    res.send({
+      error: '您是此競標物持有者，無法競標'
+    })
+  }
+  else {
+    datalist[req.body.ID].beginPrice = req.body.price;
+    datalist[req.body.ID].email = req.body.email;
+  
+    res.send({
+      itemInfo: datalist[req.body.ID]
+    })
+  }
 });
 
 router.get('/display', function (req, res) {
