@@ -4,13 +4,13 @@ var router = express.Router();
 
 // create a kafka client to connect kafka server 
 var kafka = require('kafka-node');
-let client = new kafka.KafkaClient({ kafkaHost: '18.224.252.168:9092' }),
+let client = new kafka.KafkaClient({ kafkaHost: '3.137.154.62:9092' });
 
-  //create  a  producer 
-  Producer = kafka.Producer
-producer = new Producer(client),
-  //create a consumer 
-  Consumer = kafka.Consumer;
+//create  a  producer 
+Producer = kafka.Producer;
+producer = new Producer(client);
+//create a consumer 
+Consumer = kafka.Consumer;
 
 const admin = new kafka.Admin(client);
 
