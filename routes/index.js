@@ -4,22 +4,18 @@ var router = express.Router();
 
 // create a kafka client to connect kafka server 
 var kafka = require('kafka-node');
-let client = new kafka.KafkaClient({ kafkaHost: '18.224.252.168:9092' }),
+let client = new kafka.KafkaClient({ kafkaHost: '3.137.154.62:9092' });
 
-  //create  a  producer 
-  Producer = kafka.Producer
-producer = new Producer(client),
-  //create a consumer 
-  Consumer = kafka.Consumer;
+//create  a  producer 
+Producer = kafka.Producer;
+producer = new Producer(client);
+//create a consumer 
+Consumer = kafka.Consumer;
 
 const admin = new kafka.Admin(client);
 
 let datalist = [];
 let enddata = [];
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('upload', { title: 'Express' });
-});
 
 
 
@@ -99,11 +95,14 @@ router.post('/upload', function (req, res, next) {
 
 
 
-  res.send('thanks');
+  res.send('<a href="/display">商品列表</a>');
 });
 
-router.get('/present', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+router.post('/updatePrice', function (req, res, next) {
+  datalist[req.body.ID].beginPrice = req.body.price;
+  res.send({
+    itemInfo: datalist[req.body.ID]
+  })
 });
 
 router.get('/display', function (req, res) {
