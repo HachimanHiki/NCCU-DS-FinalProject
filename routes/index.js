@@ -95,7 +95,7 @@ router.post('/upload', function (req, res, next) {
 
 
 
-  res.send('thanks');
+  res.send('<a href="/display">商品列表</a>');
 });
 
 router.get('/display', function (req, res) {
