@@ -22,7 +22,7 @@ let enddata = [];
 
 
 
-router.post('/upload', function(req, res, next) {
+router.post('/uploadItem', function(req, res, next) {
     let object = JSON.parse(JSON.stringify(req.body));
     let ID = datalist.length
     object['ID'] = ID
@@ -82,27 +82,17 @@ router.post('/upload', function(req, res, next) {
 
     });
 
-
-
-
-
-
     //.console.log(kfdata);
     //console.log(JSON.stringify(kfdata));
 
-
-
     // console.log(datalist);
     //console.log(data[req.body.name]);
-
-
-
 
     res.send('<a href="/display">商品列表</a>');
 });
 
 
-router.post('/updatePrice', function(req, res, next) {
+router.post('/updateItemPrice', function(req, res, next) {
     let name = datalist[req.body.ID].name;
 
     offset.fetch([
@@ -191,7 +181,7 @@ router.get('/display', function(req, res) {
     });
 })
 
-router.get('/changeitem', async function(req, res, next) {
+router.get('/changeItem', async function(req, res, next) {
     console.log('\n');
     console.log('change');
     var name = datalist[req.query.ID].name;
