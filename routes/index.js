@@ -44,13 +44,13 @@ router.post('/upload', function(req, res, next) {
   
     */
 
-    var kfdata = {};
-    kfdata['ID'] = object['name'];
-    kfdata['email'] = "example@gmail.com";
-    kfdata['startPrice'] = Number(object['beginPrice']);
-    kfdata['currentPrice'] = Number(object['beginPrice']);
-    kfdata['endTime'] = object['time'];
-    kfdata['description'] = object['description'];
+  var kfdata = {};
+  kfdata['ID'] = object['name'];
+  kfdata['email'] = object['email'];
+  kfdata['startPrice'] = Number(object['beginPrice']);
+  kfdata['currentPrice'] = Number(object['beginPrice']);
+  kfdata['endTime'] = object['time'];
+  kfdata['description'] = object['description'];
 
     //create a new topic 
     var topicsToCreate = [{
@@ -103,17 +103,15 @@ router.post('/upload', function(req, res, next) {
 
 
 router.post('/updatePrice', function(req, res, next) {
-    var name = datalist[req.body.ID].name;
+    let name = datalist[req.body.ID].name;
 
-    var latestOffset;
     offset.fetch([
-        { topic: name, partition: 0, time: Date().now }
+        { topic: name, partition: 0, time: -1 }
     ], function(error, data) {
         console.log(error);
         console.log(data);
-        latestOffset = data[name]['0'][0] - 1;
+        let latestOffset = data[name]['0'][0] - 1;
         console.log(latestOffset);
-        console.log('update.last', latestOffset);
 
         consumer = new Consumer(
             client, [{ topic: name, partition: 0 }], {
@@ -123,7 +121,7 @@ router.post('/updatePrice', function(req, res, next) {
         );
         consumer.setOffset(name, 0, latestOffset);
 
-        var kfdata = {};
+        let kfdata = {};
 
         consumer.on('message', function(message) {
             let data = JSON.parse(message.value);
@@ -133,77 +131,46 @@ router.post('/updatePrice', function(req, res, next) {
             kfdata['currentPrice'] = data.currentPrice;
             kfdata['endTime'] = data.endTime;
             kfdata['description'] = data.description;;
-            if (Number(data.currentPrice) < req.body.price) {
-                kfdata['currentPrice'] = Number(req.body.price);
 
+            let today = new Date();
+            let deadlineDate = new Date(data.endTime);
+
+            if (today >= deadlineDate){
+                res.send({
+                  error: '已經過了競標時間'
+                })
+            } else if (Number(data.currentPrice) >= req.body.price) {
+                res.send({
+                    error: '您的出價金額比現價金額低，請再輸入一次'
+                })
+            } else if (datalist[req.body.ID].email == req.body.email) {
+                res.send({
+                  error: '您是此競標物持有者，無法競標'
+                })
+            }
+            else {
+                kfdata['currentPrice'] = Number(req.body.price);
+                kfdata['email'] = req.body.email;
+    
                 payloads = [
                     { topic: kfdata['ID'], messages: JSON.stringify(kfdata), partition: 0 }
                 ];
+                
                 // producer publish message to topics
-                // producer.send(payloads, function(err, data) {
-                //     console.log('here');
-                //     console.log(data);
-                // });
+                producer.send(payloads, function(err, data) {
+                     console.log('here');
+                     console.log(data);
+                });
 
                 consumer.removeTopics([name], function(err, removed) {})
-
-
+    
+                
+                res.send({
+                    itemInfo: kfdata
+                })
             }
-            res.send({})
         });
     });
-
-    // // var latestOffset = fetchOffset(name);
-    // // console.log(latestOffset);
-    // // consumer.setOffset(name, 0, latestOffset);
-    // console.log('update.last', latestOffset);
-    // consumer = new Consumer(
-    //     client, [{ topic: name, partition: 0 }], {
-    //         autoCommit: false,
-    //         fromOffset: true
-    //     }
-    // );
-
-    // var kfdata = {};
-    // // consumer.removeTopics([name], function(err, removed) {})
-
-    // // res.send({
-    // //     //     itemInfo: atalist[req.body.ID]
-    // // })
-
-    // // console.log('update.end');
-
-    // consumer.on('message', function(message) {
-    //     console.log(latestOffset);
-    //     console.log('on update');
-    //     let data = JSON.parse(message.value);
-    //     console.log(data);
-    //     kfdata['ID'] = message.topic;
-    //     kfdata['email'] = data.email;
-    //     kfdata['startPrice'] = data.startPrice;
-    //     kfdata['currentPrice'] = data.currentPrice;
-    //     kfdata['endTime'] = data.endTime;
-    //     kfdata['description'] = data.description;;
-    //     if (Number(data.currentPrice) < req.body.price) {
-    //         kfdata['currentPrice'] = Number(req.body.price);
-
-    //         payloads = [
-    //             { topic: kfdata['ID'], messages: JSON.stringify(kfdata), partition: 0 }
-    //         ];
-    //         console.log('\n');
-    //         console.log(payloads);
-    //         // producer.send(payloads, function(err, data) {
-    //         //     console.log('here');
-    //         //     console.log(data);
-    //         // });
-
-    //         consumer.removeTopics([name], function(err, removed) {})
-
-
-    //     }
-    //     res.send({})
-    // });
-
 });
 
 router.get('/display', function(req, res) {
