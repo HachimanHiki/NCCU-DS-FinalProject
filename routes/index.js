@@ -82,21 +82,11 @@ router.post('/uploadItem', function(req, res, next) {
 
     });
 
-
-
-
-
-
     //.console.log(kfdata);
     //console.log(JSON.stringify(kfdata));
 
-
-
     // console.log(datalist);
     //console.log(data[req.body.name]);
-
-
-
 
     res.send('<a href="/display">商品列表</a>');
 });
