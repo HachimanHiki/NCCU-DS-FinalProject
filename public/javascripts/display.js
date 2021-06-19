@@ -10,7 +10,7 @@ const emailRule = `[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+`;
 
 function showitem(ID) {
     //console.log(i)
-    $.get('/changeitem', {
+    $.get('/changeItem', {
         ID: ID
     }, function (result) {
         //console.log(result)
@@ -51,7 +51,7 @@ function bidItem() {
         return;
     }
 
-    $.post('/updatePrice', {
+    $.post('/updateItemPrice', {
         ID: nowID,
         price: parseInt(bidPrice.val(), 10),
         email: bidEmail.val()
