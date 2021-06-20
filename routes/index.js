@@ -180,6 +180,35 @@ router.get('/display', function(req, res) {
     });
 })
 
+router.get('/history', function(req, res) {
+    console.log(datalist[req.body.ID].name)
+
+    consumer = new Consumer(
+        client, [{ topic: datalist[req.body.ID].name, partition: 0 }], {
+            autoCommit: false
+        }
+    );
+
+    var kfdata = [];
+
+    consumer.on('message', function(message) {
+        let data = JSON.parse(message.value);
+
+        let tmpObject = {};
+        tmpObject['currentPrice'] = data.currentPrice;
+        tmpObject['endTime'] = data.endTime;
+
+        kfdata.push(tmpObject);
+    })
+
+    consumer.removeTopics([name], function(err, removed) {})
+
+
+    res.send(
+        kfdata
+    )
+})
+
 router.get('/changeItem', async function(req, res, next) {
     var name = datalist[req.query.ID].name;
 

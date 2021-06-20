@@ -1,7 +1,8 @@
 let refreshButton = $('#refreshButton');
 let EndButton = $('#EndButton');
 let bidEmail = $('#bidEmail');
-let bidPrice = $('#bidPrice')
+let bidPrice = $('#bidPrice');
+let history = $('#history');
 
 let nowitem = null;
 let nowID;
@@ -10,6 +11,7 @@ const emailRule = `[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+`;
 
 function showitem(ID) {
     //console.log(i)
+
     $.get('/changeItem', {
         ID: ID
     }, function (result) {
@@ -21,6 +23,8 @@ function showitem(ID) {
         $('#Deadline').text('截標時間: ' + result.Deadline)
         $('#GoodDescription').text('商品說明:' + result.GoodDescription)
         nowID = ID;
+
+        //displayHistory()
     })
 }
 refreshButton.on('click', function () {
@@ -64,6 +68,19 @@ function bidItem() {
             bidPrice.val("")
             bidEmail.val("")
             alert('成功競標物品');
+        }
+    })
+}
+
+function displayHistory() {
+    $.get('/history', {
+        ID: nowID,
+    }, function (result) {
+        console.log(result)
+        history.html('');
+        for (let i = 0; i < result.length; i++) {
+            console.log(result)
+            history.html(`時間:${result[i].endTime} 競標金額:${result[i].currentPrice}\n` + history.html())
         }
     })
 }
