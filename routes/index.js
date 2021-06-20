@@ -95,6 +95,8 @@ router.post('/uploadItem', function(req, res, next) {
 router.post('/updateItemPrice', function(req, res, next) {
     let name = datalist[req.body.ID].name;
 
+    let offset = new kafka.Offset(client);
+
     offset.fetch([
         { topic: name, partition: 0, time: -1 }
     ], function(error, data) {
@@ -181,40 +183,43 @@ router.get('/display', function(req, res) {
 })
 
 router.get('/history', function(req, res) {
-    console.log(datalist[req.body.ID].name)
-
-    consumer = new Consumer(
-        client, [{ topic: datalist[req.body.ID].name, partition: 0 }], {
-            autoCommit: false
-        }
-    );
+    let name = datalist[req.query.ID].name;  
 
     var kfdata = [];
 
+    consumer = new Consumer(
+        client, [{ topic: name, partition: 0, offset: 0 }], {
+            autoCommit: false,
+            fromOffset: true
+        }
+    );
+
     consumer.on('message', function(message) {
+        console.log(message);
         let data = JSON.parse(message.value);
+        console.log(data);
+        consumer.removeTopics([name], function(err, removed) {});
 
         let tmpObject = {};
         tmpObject['currentPrice'] = data.currentPrice;
         tmpObject['endTime'] = data.endTime;
-
         kfdata.push(tmpObject);
     })
 
-    consumer.removeTopics([name], function(err, removed) {})
-
-
-    res.send(
-        kfdata
-    )
-})
+    setTimeout(function(){
+        console.log(kfdata);
+        res.send(kfdata)
+    },2000);
+});
 
 router.get('/changeItem', async function(req, res, next) {
     var name = datalist[req.query.ID].name;
 
+    let offset = new kafka.Offset(client);
+
     var latestOffset;
     offset.fetch([
-        { topic: name, partition: 0, time: Date().now }
+        { topic: name, partition: 0, time: -1 }
     ], function(error, data) {
         latestOffset = data[name]['0'][0] - 1;
 

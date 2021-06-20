@@ -24,7 +24,7 @@ function showitem(ID) {
         $('#GoodDescription').text('商品說明:' + result.GoodDescription)
         nowID = ID;
 
-        //displayHistory()
+        displayHistory()
     })
 }
 refreshButton.on('click', function () {
