@@ -120,7 +120,7 @@ router.post('/updateItemPrice', function(req, res, next) {
             kfdata['ID'] = message.topic;
             kfdata['email'] = req.body.email;
             kfdata['startPrice'] = data.startPrice;
-            kfdata['currentPrice'] = data.currentPrice;
+            kfdata['currentPrice'] = Number(req.body.price);
             kfdata['endTime'] = data.endTime;
             kfdata['description'] = data.description;;
 
@@ -140,9 +140,6 @@ router.post('/updateItemPrice', function(req, res, next) {
                     error: '您是此競標物持有者，無法競標'
                 })
             } else {
-                kfdata['currentPrice'] = Number(req.body.price);
-                kfdata['email'] = req.body.email;
-
                 payloads = [
                     { topic: kfdata['ID'], messages: JSON.stringify(kfdata), partition: 0 }
                 ];
