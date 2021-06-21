@@ -135,7 +135,7 @@ router.post('/updateItemPrice', function(req, res, next) {
                 res.send({
                     error: '您的出價金額比現價金額低，請再輸入一次'
                 })
-            } else if (datalist[req.body.ID].email == req.body.email) {
+            } else if (data.email == req.body.email) {
                 res.send({
                     error: '您是此競標物持有者，無法競標'
                 })
@@ -209,7 +209,7 @@ router.get('/history', function(req, res) {
     setTimeout(function(){
         console.log(kfdata);
         res.send(kfdata)
-    },2000);
+    }, 1000);
 });
 
 router.get('/changeItem', async function(req, res, next) {
